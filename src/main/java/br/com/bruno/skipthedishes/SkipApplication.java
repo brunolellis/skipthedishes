@@ -60,6 +60,7 @@ public class SkipApplication implements CommandLineRunner {
         johnCustomer.setEmail("john@gmail.com");
         johnCustomer.setName("John");
         johnCustomer.setPassword(passwordEncoder.encode("temp"));
+        johnCustomer.setAddress("321 McDermot Ave, Winnipeg, MB");
         customers.save(johnCustomer);
 
         Cousine chinese = new Cousine();

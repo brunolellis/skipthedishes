@@ -27,6 +27,10 @@ public class Customer {
 
 	@NotNull
 	@Column(nullable = false)
+	private String address;
+
+	@NotNull
+	@Column(nullable = false)
 	private String password;
 
 	public Long getId() {
@@ -61,9 +65,17 @@ public class Customer {
 		this.password = password;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + "]";
+		return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", address=" + address + "]";
 	}
 
 }
