@@ -39,11 +39,13 @@ public class CustomersIT {
 		CustomerLogin login = new CustomerLogin();
 		login.setEmail("john@gmail.com");
 		login.setPassword("temp");
-		given()
+		String token = given()
 			.header("Content-type", "application/json")
 			.body(login)
 		.post(CUSTOMERS_LOGIN_URI)
-		.then().log().all();
+		.as(String.class);
+		
+		System.out.println(token);
 		
 	}
 	

@@ -42,7 +42,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		// Custom filter for logging in users at "/login"
 		.addFilterBefore(new JWTLoginFilter(TokenHandler.LOGIN_URL, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
 		// Custom filter for authenticating users using tokens
-		.addFilterBefore(new JWTAuthenticationFilter2(), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 		// Disable resource caching
 		.headers().cacheControl();
     	

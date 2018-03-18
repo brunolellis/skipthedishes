@@ -41,7 +41,7 @@ public class CousinesIT {
 		given()
 			.get(COUSINES_URI)
 			.then()
-				.statusCode(HttpStatus.SC_FORBIDDEN);
+				.statusCode(HttpStatus.SC_UNAUTHORIZED);
 		
 	}
 	
@@ -51,7 +51,7 @@ public class CousinesIT {
 			.header(TokenHandler.HEADER_STRING, TokenHandler.TOKEN_PREFIX + "123456")
 		.get(COUSINES_URI)
 		.then()
-			.statusCode(HttpStatus.SC_FORBIDDEN);
+			.statusCode(HttpStatus.SC_UNAUTHORIZED);
 		
 	}
 	
@@ -61,7 +61,7 @@ public class CousinesIT {
 			.header(TokenHandler.HEADER_STRING, TokenHandler.TOKEN_PREFIX + "123456.11111.222222")
 		.get(COUSINES_URI)
 		.then()
-			.statusCode(HttpStatus.SC_FORBIDDEN);
+			.statusCode(HttpStatus.SC_UNAUTHORIZED);
 		
 	}
 	
