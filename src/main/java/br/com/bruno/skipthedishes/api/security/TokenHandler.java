@@ -3,7 +3,6 @@ package br.com.bruno.skipthedishes.api.security;
 import java.util.Date;
 import java.util.UUID;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 
@@ -20,16 +19,12 @@ public class TokenHandler {
 	public static final String LOGIN_URL = "/api/v1/customers/login";
 	
 	public String parse(String token) {
-		try {
-			String user = Jwts.parser()
-			        .setSigningKey(SECRET)
-			        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-			        .getBody()
-			        .getSubject();
-			return user;
-		} catch (Exception e) {
-			throw new AccessDeniedException("Invalid access");
-		}
+		String user = Jwts.parser()
+		        .setSigningKey(SECRET)
+		        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+		        .getBody()
+		        .getSubject();
+		return user;
 	}
 
 	public String build(Authentication auth) {

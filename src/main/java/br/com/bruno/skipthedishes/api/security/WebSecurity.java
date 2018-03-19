@@ -1,6 +1,7 @@
 package br.com.bruno.skipthedishes.api.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,26 +27,31 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
+	@Value("${security.basic.enabled}")
+	private Boolean securityEnabled;
+	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-		http
-		.csrf().disable()
-		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-		// This is a stateless application, disable sessions
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		// Security policy
-		.authorizeRequests()
-			.antMatchers(HttpMethod.POST, TokenHandler.LOGIN_URL).permitAll()
-			.antMatchers(HttpMethod.POST, TokenHandler.SIGN_UP_URL).permitAll()
-			// Any other request must be authenticated
-			.anyRequest().authenticated().and()
-		// Custom filter for logging in users at "/login"
-		.addFilterBefore(new JWTLoginFilter(TokenHandler.LOGIN_URL, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-		// Custom filter for authenticating users using tokens
-		.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-		// Disable resource caching
-		.headers().cacheControl();
     	
+    	if (!securityEnabled) {
+    		http.authorizeRequests().antMatchers("/").permitAll();
+			return;
+    	}
+
+    	
+		http
+			.csrf().disable()
+			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			// Security policy
+			.authorizeRequests()
+				.antMatchers(HttpMethod.POST, TokenHandler.LOGIN_URL).permitAll()
+				.antMatchers(HttpMethod.POST, TokenHandler.SIGN_UP_URL).permitAll()
+				// Any other request must be authenticated
+				.anyRequest().authenticated().and()
+			.addFilterBefore(new JWTLoginFilter(TokenHandler.LOGIN_URL, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		
     }
 
 	@Override
